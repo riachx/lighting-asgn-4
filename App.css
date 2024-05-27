@@ -1,0 +1,304 @@
+@font-face {
+    font-family: 'PixelCraft';
+    src: url('/fonts/PixelCraft-2Odxo.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.jaro-face {
+  font-family: "Jaro", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 100;
+  font-style: normal;
+}
+
+.dm-mono-light {
+    font-family: "DM Mono", monospace;
+    font-weight: 300;
+    font-style: normal;
+  }
+  
+  .dm-mono-regular {
+    font-family: "DM Mono", monospace;
+    font-weight: 400;
+    font-style: normal;
+  }
+  
+  .dm-mono-medium {
+    font-family: "DM Mono", monospace;
+    font-weight: 500;
+    font-style: normal;
+  }
+  
+  .dm-mono-light-italic {
+    font-family: "DM Mono", monospace;
+    font-weight: 300;
+    font-style: italic;
+  }
+  
+  .dm-mono-regular-italic {
+    font-family: "DM Mono", monospace;
+    font-weight: 400;
+    font-style: italic;
+  }
+  
+  .dm-mono-medium-italic {
+    font-family: "DM Mono", monospace;
+    font-weight: 500;
+    font-style: italic;
+  }
+  
+  /* colors.css */
+:root {
+    --primary-color: rgb(154, 218, 76);
+    --secondary-color: rgba(44, 100, 98, 0.5);
+    --button-color: rgb(39, 197, 189);
+    --background-color: #f5fdff;
+    --overlay-color: rgba(11, 116, 137, 0.8);
+}
+
+
+body {
+    background-image: url('assets/daytime.png');
+    background-size: cover; /* Cover the entire page */
+    background-position: center; /* Center the background image */
+    background-repeat: repeat; /* Do not repeat the image */
+    display: flex;
+    flex-direction: column; /* Stack items vertically */
+    align-items: center; /* Center items horizontally */
+    justify-content: center; /* Center items vertically */
+    height: 100%;
+    margin: 0;
+    font-family: "DM Mono", "sans-serif";
+}
+.night-mode {
+    background-image: url('assets/nighttime.png');
+    color: white; /* Light text */
+    
+    
+}
+body.night-mode h1 {
+    color: #ffc31d; /* Change to gold color in night mode */
+}
+
+
+.menu-header.night-mode {
+    font-family: 'PixelCraft', 'sans-serif';
+    font-size: 0px;
+    color: var( --primary-color);
+    
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left;
+    margin-left:20px;
+}
+
+h1 {
+    font-family: 'Jaro', 'sans-serif';
+    font-size: 80px; /* Large text size */
+    color: #2a98c3; /* Soft pink color */
+    margin-top: 10px; /* Space above the title */
+    margin-bottom:5px;
+    margin-left: -110px;
+    letter-spacing:8px;
+}
+p{
+  margin:5px;
+}
+
+h4{
+    font-family: 'PixelCraft', 'sans-serif';
+    font-size: 30px;
+
+}
+
+
+
+.canvas-and-controls {
+    display: flex;
+}
+
+.canvas-container {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 500px;
+    height: 500px;
+}
+
+.controls {
+    flex-direction: column;
+    justify-content: center;
+    padding: 20px;
+    padding-left:60px;
+    margin-right:-320px;
+    font-size:20px;
+}
+
+
+#webgl {
+    background-color: white;
+    width: 100%;
+    height: 100%;
+}
+
+#hamburger-menu {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 40px;
+    height: 30px;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    cursor: pointer;
+    z-index: 10;
+    background-color: var(--button-color);
+    padding:6px;
+}
+
+body.night-mode #hamburger-menu {
+    background-color: rgb(29, 9, 91);
+}
+
+
+#hamburger-menu span {
+    background-color: var(--background-color);
+    height: 4px;
+    width: 100%;
+    border-radius: 2px;
+    transition: transform 0.5s ease, background-color 0.5s ease, opacity 0.5s ease;
+}
+
+#hamburger-menu:hover span:nth-child(1) {
+    transform: translateY(10px) rotate(45deg);
+}
+
+#hamburger-menu:hover span:nth-child(2) {
+    opacity: 0;
+}
+
+#hamburger-menu:hover span:nth-child(3) {
+    transform: translateY(-10px) rotate(-45deg);
+}
+
+
+
+.keyMenu {
+    /*display:none; */
+    
+    position: fixed; 
+    top: 20%; 
+    left: 50%; 
+    transform: translate(-50%, 50%);
+    background: var(--secondary-color);
+    opacity:80%;
+    border: 5px solid var(--primary-color);
+    border-radius: 10px;
+    padding: 10px;
+    z-index: 1000;
+    
+}
+.keyText{
+    opacity:100%;
+
+}
+
+#canvasOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay-color); /* Dark blue with transparency */
+    display: none; /* Hidden by default */
+    z-index: 1; /* Ensure it covers the canvas but is below the menu */
+}
+
+.hidden {
+    display: none;
+}
+.menu-popup {
+    z-index:10;
+    width: 250px;
+    background-color: var( --secondary-color);
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    position: fixed;
+    left: 45%;
+    top: 50%;
+    border: 10px solid var( --primary-color);
+    border-radius: 40px;
+    transform: translate(-50%, -50%);
+    letter-spacing: 2px;
+    display:none;
+    filter: drop-shadow(0 0 0.4rem rgb(5, 80, 126));
+}
+
+.menu-header {
+    font-family: 'PixelCraft', 'sans-serif';
+    font-size: 40px;
+    color: var( --primary-color);
+    
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left;
+    margin-left:20px;
+}
+
+
+.menu-list {
+    font-family: "DM Mono";
+    font-weight:200;
+    letter-spacing: 1px;
+    color : var( --primary-color);
+    font-size:18px;
+    list-style:none;
+    padding-left: 20px;
+    
+}
+
+
+.menu-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0px;
+}
+
+.menu-button {
+    background-color: var(--secondary-color);
+    border: none;
+    padding: 3px 12px; /* Adjust padding to better accommodate two images */
+    border-radius: 5px;
+    
+    display: flex; /* Ensure images sit side by side */
+    justify-content: center; /* Center the images inside the button */
+    align-items: center; /* Align images vertically */
+}
+
+.menu-button img {
+    width: 40px; /* Adjust width to give each image equal space */
+    height: 40px;
+    display: block; /* Block level to fill the button space */
+    margin-right: 4px; /* Spacing between the two images */
+
+    filter:saturate(1.9);
+
+    filter:contrast(1.5);
+    
+    filter:hue-rotate(250deg);
+}
+
+.menu-button img:last-child {
+    margin-right: 0; /* Remove margin for the last image */
+    filter:saturate(1.9);
+    filter:contrast(1.5);
+    filter:hue-rotate(250deg);
+    
+}

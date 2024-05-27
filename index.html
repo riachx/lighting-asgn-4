@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <link rel="stylesheet" type="text/css" href="App.css">
+  <title>Blocky world!</title> <!-- Update the title here -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Share+Tech+Mono&display=swap"
+    rel="stylesheet">
+  <title>Change a point color</title>
+  <link rel="preload" href="assets/daytime.png" as="image">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jaro:opsz@6..72&display=swap" rel="stylesheet">
+
+</head>
+
+<body onload="main()">
+
+  <h1>Blocky World!</h1>
+  
+
+  <div class="canvas-and-controls">
+    <div class="canvas-container">
+        <canvas id="webgl" width="400" height="400">
+            Please use a browser that supports "canvas"
+        </canvas>
+        <div id="hamburger-menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+      <div class="controls">
+        <p>Night Mode:</p>
+        <button type="button" id="nightModeOn">ON</button>
+        <button type="button" id="nightModeOff">OFF</button>
+        <p>
+            Rotate about Origin <input type="range" min="-90" max="90" value="45" class="slider" id="angleSlide">
+        </p>
+
+        <label for="normal_on">Normals: </label><br>
+        <button type="button" id="normal_on">ON</button>
+        <button type="button" id="normal_off">OFF</button><br>
+
+        <label for="light_on">Light: </label><br>
+        <button type="button" id="light_on">ON</button>
+        <button type="button" id="light_off">OFF</button><br>
+
+        <label for="lightColorPicker">Light Color</label>
+        <input type="color" name="lightColorPicker" id="lightColorPicker" value="#ffffff"> <br>
+lightColorPicker = document.getElementById("lightColorPicker");
+        <select id="lightSelector">
+          <option value="point">point</option>
+          <option value="spotlight">spot</option>
+        </select>
+
+        
+
+
+        <p>
+          Light X <input type = "range" min="-250" max="250" value="0" class = "slider" id="lightSlideX"><br>
+          Light Y <input type = "range" min="-250" max="250" value="100" class = "slider" id="lightSlideY"><br>
+          Light Z <input type = "range" min="-250" max="250" value="-200" class = "slider" id="lightSlideZ">
+        </p>
+    </div>
+    </div>
+    
+    
+</div>
+<div><p id="numdot"> XXX </p></div>
+
+
+  <div id="menuPopup" class="menu-popup">
+    <div class="menu-header">KEYS</div>
+    <ul class="menu-list">
+      <li>
+        <span>FORWARD</span>
+        <button class="menu-button">
+          <img src="./assets/UP.svg" alt="Forward">
+          <img src="./assets/W.svg" alt="Forward">
+        </button>
+      </li>
+      <li>
+        <span>BACKWARD</span>
+        <button class="menu-button">
+          <img src="./assets/DOWN.svg" alt="Down">
+          <img src="./assets/S.svg" alt="S">
+        </button>
+      </li>
+      <li>
+        <span>PAN</span>
+        <button class="menu-button">
+          <img src="./assets/Q.svg" alt="Q">
+          <img src="./assets/E.svg" alt="E">
+        </button>
+      </li>
+      <li>
+        <span>LEFT</span>
+        <button class="menu-button">
+          <img src="./assets/LEFT.svg" alt="Left">
+          <img src="./assets/A.svg" alt="A">
+        </button>
+      </li>
+      <li>
+        <span>RIGHT</span>
+        <button class="menu-button">
+          <img src="./assets/RIGHT.svg" alt="Left">
+          <img src="./assets/D.svg" alt="A">
+        </button>
+      </li>
+      <li>
+        <span>SHIFT</span>
+        <button class="menu-button">
+          <img src="./assets/MENU.svg" alt="Menu" style = " width: 85px;height: 40px; padding:0px">
+        </button>
+      </li>
+      <li>
+        <span>JUMP</span>
+        <button class="menu-button">
+          <img src="./assets/SPACE.svg" alt="Menu" style = " width: 85px;height: 40px; padding:0px">
+        </button>
+      </li>
+    </ul>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const body = document.body;
+        const nightModeOn = document.getElementById('nightModeOn');
+        const nightModeOff = document.getElementById('nightModeOff');
+
+        nightModeOn.addEventListener('click', function() {
+            body.classList.add('night-mode');
+        });
+
+        nightModeOff.addEventListener('click', function() {
+            body.classList.remove('night-mode');
+        });
+    });
+</script>
+
+
+
+
+  <script>
+    // This function will run when the page is fully loaded
+    document.addEventListener("DOMContentLoaded", function () {
+
+      const hamburger = document.getElementById('hamburger-menu');
+      const menu = document.getElementById('menuPopup');
+
+      hamburger.addEventListener('click', function () {
+
+        
+        var overlay = document.getElementById('canvasOverlay');
+
+
+        if (!overlay) {
+          overlay = document.createElement('div');
+          overlay.id = 'canvasOverlay';
+          document.body.appendChild(overlay);
+        }
+
+        // Toggle display of the menu and overlay
+        var isMenuVisible = menu.style.display === 'block';
+        menu.style.display = isMenuVisible ? 'none' : 'block';
+        overlay.style.display = isMenuVisible ? 'none' : 'block';
+      });
+    });
+  </script>
+
+  
+
+  <script src="
+      https://cdn.jsdelivr.net/npm/webgl-obj-loader@2.0.8/dist/webgl-obj-loader.min.js
+      "></script>
+      <script src="https://cdn.jsdelivr.net/npm/gifler@0.1.0/gifler.min.js"></script>
+  <script src="./lib/webgl-utils.js"></script>
+  <script src="./lib/cuon-matrix-cse160.js"></script>
+  <script src="./lib/webgl-debug.js"></script>
+  <script src="./lib/cuon-utils.js"></script>
+  <script src="Triangle.js"></script>
+  <script src="Cube.js"></script>
+  <script src="Camera.js"></script>
+  <script src="Tetrahedron.js"></script>
+  <script src="Sphere.js"></script>
+  <script src="Cylinder.js"></script>
+  <script src="World.js"></script>
+</body>
+
+</html>
