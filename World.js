@@ -88,7 +88,7 @@ var FSHADER_SOURCE = `
 
 
 
-    vec3 lightVector = vec3(v_VertPos)-u_lightPos;
+    vec3 lightVector = u_lightPos-vec3(v_VertPos);
     float r = length(lightVector);
     
     vec3 d = vec3(0.5, 0.5, 0.5);
@@ -106,8 +106,8 @@ var FSHADER_SOURCE = `
 
     vec3 specular = pow(max(dot(E,R), 0.0), 10.0) * u_LightColor;
 
-    vec3 diffuse = vec3(gl_FragColor) * nDotL * 0.7;
-    vec3 ambient = a * (vec3(u_FragColor) + u_LightColor);
+    vec3 diffuse = vec3(1.0,1.0,0.9)* vec3(gl_FragColor)*nDotL* 0.7;
+    vec3 ambient = 0.2* vec3(u_FragColor) *u_LightColor;
 
     float spotFactor = 0.0;
 
@@ -232,10 +232,10 @@ function drawMap() {
           var body = new Cube();
           body.dirt = true;
           body.color = [0.8, 1.0, 1.0, 1.0];
-          if (g_nightMode) {
-            body.textureNum = 7;
+          if (g_normalOn) {
+            body.textureNum = -3;
           } else {
-            body.textureNum = 2;
+            body.textureNum = -2;
           }
           body.matrix.translate(0, -0.75, 0);
           body.matrix.scale(0.5, 0.48, 0.5);
@@ -244,10 +244,10 @@ function drawMap() {
 
           var grass = new Cube();
           grass.color = [0.2, 0.6, 0.4, 1.0];
-          if (g_nightMode) {
-            grass.textureNum = 8;
+          if (g_normalOn) {
+            grass.textureNum = -3;
           } else {
-            grass.textureNum = 3;
+            grass.textureNum = -2;
           }
           grass.matrix.translate(0, -0.75, 0);
           grass.matrix.scale(0.5, 0.02, 0.5);
@@ -528,7 +528,7 @@ function initTextures() {
   });
 }
 
-function getLightColor() {
+function getLightColor(lightColorPicker) {
   let c = lightColorPicker.value;
 
   let r = parseInt(c.slice(1, 3), 16) / 255;
@@ -574,9 +574,11 @@ function renderAllShapes() {
     
 
   var light = new Cube();
-  let lightCols = getLightColor();
+  let lightCols = getLightColor(lightColorPicker);
   gl.uniform3fv(u_LightColor, new Float32Array(lightCols.elements)); //pass the color into the shader
-  light.color = [lightCols.x, lightCols.y, lightCols.z, 1];
+  light.color = [lightCols.elements[0], lightCols.elements[1], lightCols.elements[2], 1];
+
+  //console.log([lightCols.x, lightCols.y, lightCols.z, 1])
   //light.color = [2, 2, 0, 1];
   light.textureNum = -2;
   light.matrix.translate(g_lightPos[0], g_lightPos[1], g_lightPos[2])
@@ -587,7 +589,7 @@ function renderAllShapes() {
 
   //floor
   var floor = new Cube();
-  floor.color = [1, 0, 0, 1];
+  floor.color = [1, 1, 1, 1];
 
   if (g_nightMode) {
     floor.textureNum = 6;
@@ -597,9 +599,11 @@ function renderAllShapes() {
 
   if (g_normalOn) {
     floor.textureNum = -3;
+  } else{
+    floor.textureNum = -2;
   }
   floor.matrix.translate(0, -0.75, 0);
-  floor.matrix.scale(20, 2, 20);
+  floor.matrix.scale(30, 2, 30);
   floor.matrix.translate(-0.5, -1, -0.5);
   floor.render()
 
@@ -612,8 +616,48 @@ function renderAllShapes() {
   } else {
     sky.textureNum = -2;
   }
-  sky.matrix.translate(-0.5, 0, -0.5);
+  sky.matrix.translate(-0.5, -0.5, -1.5);
   sky.render();
+
+
+  var sky2 = new Cube();
+  sky2.color = [1, 0.4, 0.3, 1];
+  sky2.matrix.scale(25, 25, 25);
+
+  if (g_normalOn) {
+    sky2.textureNum = -3;
+  } else {
+    sky2.textureNum = -2;
+  }
+  sky2.matrix.translate(-1.5, -0.5, -0.5);
+  sky2.render();
+
+
+  var sky3 = new Cube();
+  sky3.color = [0.5, 0.8, 0.3, 1];
+  sky3.matrix.scale(25, 25, 25);
+
+  if (g_normalOn) {
+    sky3.textureNum = -3;
+  } else {
+    sky3.textureNum = -2;
+  }
+  sky3.matrix.translate(0.5, -0.5, -0.5);
+  sky3.render();
+
+
+
+  var sky4 = new Cube();
+  sky4.color = [0.9, 0.8, 0.3, 1];
+  sky4.matrix.scale(25, 25, 25);
+
+  if (g_normalOn) {
+    sky4.textureNum = -3;
+  } else {
+    sky4.textureNum = -2;
+  }
+  sky4.matrix.translate(-0.5, -0.5, 0.5);
+  sky4.render();
 
   var ball = new Sphere();
   ball.matrix.translate(-1.5, 1, 0);
@@ -630,7 +674,7 @@ function renderAllShapes() {
   if (g_normalOn) {
     ball2.textureNum = -3;
   } else {
-    ball2.textureNum = 1;
+    ball2.textureNum = -2;
   }
   ball2.render();
 
